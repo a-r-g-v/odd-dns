@@ -5,6 +5,9 @@ from struct import *
 
 class DNSQuery(object):
 
+    def __init__(self):
+        pass
+
     @classmethod
     def from_data(cls, data):
         self = cls()
@@ -46,7 +49,18 @@ class DNSQuery(object):
     def __repr__(self):
         return "Transaction ID:{}".format(hex(self.id))
 
-        
+    def __str__(self):
+        flag = 0
+        flag += self.qr &       0b1000000000000000
+        flag += self.opcode &   0b0111100000000000
+        flag += self.aa &       0b0000010000000000
+        flag += self.tc &       0b0000001000000000
+        flag += self.rd &       0b0000000100000000
+        flag += self.ra &       0b0000000010000000
+        flag += self.z &        0b0000000001000000
+        flag += self.ad &       0b0000000000100000
+        flag += self.cd &       0b0000000000010000
+        flag += self.rcode &    0b0000000000001111
 
 
 
@@ -56,4 +70,4 @@ if __name__ == "__main__":
 
     while 1:
         data, addr = sock.recvfrom(1000)
-        print repr(DNSQuery.from_data(data))
+        query = DNSQuery.from_data(data)
