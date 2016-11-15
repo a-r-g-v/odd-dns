@@ -1,16 +1,13 @@
 #!/usr/bin/env python 
 import socket
 import threading
+from struct import *
 
 class DNSQuery(object):
 
     @classmethod
     def from_data(cls, data):
         self = cls()
-
-    @staticmethod
-    def decode(data):
-        self = object()
         self.id = int(data[0:2].encode('hex'), 16)
         self.flag = int(data[2:4].encode('hex'), 16)
 
@@ -49,8 +46,6 @@ class DNSQuery(object):
     def __repr__(self):
         return "Transaction ID:{}".format(hex(self.id))
 
-    def __str__(self):
-        pass
         
 
 
@@ -61,5 +56,4 @@ if __name__ == "__main__":
 
     while 1:
         data, addr = sock.recvfrom(1000)
-        print DNSQuery.parse(data)
-
+        print repr(DNSQuery.from_data(data))
